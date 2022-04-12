@@ -140,7 +140,7 @@ make_channel({
 
 
 make_channel({
-    name = "Ocean TV", timeout = 3,	input = {"dvb://adapter_1#pnr=1218&cam=reader_0"},output = {"udp://235.1.0.57:32768#pass_sdt&pass_eit"},
+    name = "Ocean TV",	input = {"dvb://adapter_1#pnr=1218&cam=reader_0"},output = {"udp://235.1.0.57:32768#pass_sdt&pass_eit"},
 })
 
 make_channel({
