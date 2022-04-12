@@ -9,7 +9,7 @@ StreamReader sr = new StreamReader(@"85E-all.lua");
 bool isReading = false;
 List<string> Blocks = new List<string>();
 string newline = "";
-List<Parametr> BlockTexts = new List<Parametr>();
+List<Parametr> BlocksParametrs = new List<Parametr>();
 
 while (!sr.EndOfStream)
 {
@@ -46,7 +46,7 @@ foreach (string line in Blocks)
         var parametr = new Reader();
 
         //newBlockText.Type = "Шара-Параметры";
-        BlockTexts.Add(parametr);
+        BlocksParametrs.Add(parametr);
 
     }
     if (line.StartsWith("adapter"))
@@ -56,7 +56,7 @@ foreach (string line in Blocks)
         string[] parametrs = line.Split(separators1, StringSplitOptions.RemoveEmptyEntries);
         parametr.Name = parametrs[0].Replace("adapter_", "").Replace(" = dvb_tune", "").Trim();
         // newBlockText.Type = "Тест";
-        BlockTexts.Add(parametr);
+        BlocksParametrs.Add(parametr);
     }
     
 }
@@ -74,21 +74,21 @@ foreach(string line in Blocks){
         string[] parametrs = line.Split(separators1, StringSplitOptions.RemoveEmptyEntries);
         parametr.Name = parametrs[1].Replace("name = ", "").Replace("\"", "").Trim();
         string numAdapter = parametrs[2].Trim().Replace("input = {\"dvb://adapter_", "").Remove(1);
-        parametr.Adapter = (Adapter)BlockTexts.Where(x => x is Adapter).Where(x=>x.Name == numAdapter).First();
-        BlockTexts.Add(parametr);
+        parametr.Adapter = (Adapter)BlocksParametrs.Where(x => x is Adapter).Where(x=>x.Name == numAdapter).First();
+        BlocksParametrs.Add(parametr);
     }
 }
 
 
-Console.WriteLine($"Адаптеров: {BlockTexts.Where(x => x is Adapter).Count()}");
-Console.WriteLine($"Ридеров: {BlockTexts.Where(x => x is Reader).Count()}");
-Console.WriteLine($"Каналов: {BlockTexts.Where(x => x is Channel).Count()}");
+Console.WriteLine($"Адаптеров: {BlocksParametrs.Where(x => x is Adapter).Count()}");
+Console.WriteLine($"Ридеров: {BlocksParametrs.Where(x => x is Reader).Count()}");
+Console.WriteLine($"Каналов: {BlocksParametrs.Where(x => x is Channel).Count()}");
 
 Console.WriteLine("Каналов список:");
-foreach (Channel name in BlockTexts.Where(x => x is Channel))
+foreach (Channel chan in BlocksParametrs.Where(x => x is Channel))
 {
-    Console.WriteLine(name.Name);
-    Console.WriteLine(name.Adapter.Name);
+    Console.WriteLine(chan.Name);
+    Console.WriteLine(chan.Adapter.Name);
 }
 
 Console.WriteLine("Адаптеров список:");
