@@ -2,7 +2,7 @@
 //Console.WriteLine("Hello, World!");
 
 
-StreamReader sr = new StreamReader(@"C:\Users\BarsS\source\repos\LuaAstraViewer\LuaAstraViewer\85E-all.lua");
+StreamReader sr = new StreamReader(@"85E-all.lua");
 //Console.WriteLine(sr.ReadToEnd());
 
 
@@ -13,7 +13,7 @@ List<Parametr> BlockTexts = new List<Parametr>();
 
 while (!sr.EndOfStream)
 {
-    
+
     string line = sr.ReadLine();
     if (line.StartsWith("--"))
     {
@@ -21,7 +21,7 @@ while (!sr.EndOfStream)
     }
     if (line.Contains("({"))
     {
-        
+
         isReading = true;
 
     }
@@ -31,17 +31,16 @@ while (!sr.EndOfStream)
 
     if (line.Equals("})"))
     {
-        
+
         isReading = false;
         Blocks.Add(newline);
         newline = "";
     }
 }
 
-
-foreach(string line in Blocks)
+foreach (string line in Blocks)
 {
-    
+
     if (line.StartsWith("reader"))
     {
         var parametr = new Reader();
@@ -59,17 +58,26 @@ foreach(string line in Blocks)
         // newBlockText.Type = "Тест";
         BlockTexts.Add(parametr);
     }
+    
+}
+
+/*foreach (var name in BlockTexts.Where(x => x is Adapter).Select(x => x.Name))
+{
+    Console.WriteLine(name);
+}
+*/
+foreach(string line in Blocks){
     if (line.StartsWith("make_channel"))
     {
         var parametr = new Channel();
         string[] separators1 = new string[] { ",", "({", "})" };
         string[] parametrs = line.Split(separators1, StringSplitOptions.RemoveEmptyEntries);
-        parametr.Name = parametrs[1].Replace("name = ", "").Replace("\"", "").Trim() ;
-        // newBlockText.Type = "Канал";
+        parametr.Name = parametrs[1].Replace("name = ", "").Replace("\"", "").Trim();
+        string numAdapter = parametrs[2].Trim().Replace("input = {\"dvb://adapter_", "").Remove(1);
+        parametr.Adapter = (Adapter)BlockTexts.Where(x => x is Adapter).Where(x=>x.Name == numAdapter).First();
         BlockTexts.Add(parametr);
     }
 }
-
 
 
 Console.WriteLine($"Адаптеров: {BlockTexts.Where(x => x is Adapter).Count()}");
@@ -77,14 +85,12 @@ Console.WriteLine($"Ридеров: {BlockTexts.Where(x => x is Reader).Count()}
 Console.WriteLine($"Каналов: {BlockTexts.Where(x => x is Channel).Count()}");
 
 Console.WriteLine("Каналов список:");
-foreach (var name in BlockTexts.Where(x=>x is Channel).Select(x => x.Name))
+foreach (Channel name in BlockTexts.Where(x => x is Channel))
 {
-    Console.WriteLine(name);
+    Console.WriteLine(name.Name);
+    Console.WriteLine(name.Adapter.Name);
 }
 
 Console.WriteLine("Адаптеров список:");
-foreach (var name in BlockTexts.Where(x => x is Adapter).Select(x => x.Name))
-{
-    Console.WriteLine(name);
-}
+
 
