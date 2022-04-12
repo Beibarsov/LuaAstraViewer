@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-internal class Parametr
+public class Parametr
 {
 
     public string Name { get; set; }

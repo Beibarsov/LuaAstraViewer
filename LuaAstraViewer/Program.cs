@@ -2,42 +2,25 @@
 //Console.WriteLine("Hello, World!");
 
 
-StreamReader sr = new StreamReader(@"85E-all.lua");
+
 //Console.WriteLine(sr.ReadToEnd());
 
 
 bool isReading = false;
 List<string> Blocks = new List<string>();
-string newline = "";
+
+MainController mainController = new MainController();
+LuaReader luaReader = new LuaReader();
+
+
+
 List<Parametr> BlocksParametrs = new List<Parametr>();
 
-while (!sr.EndOfStream)
-{
 
-    string line = sr.ReadLine();
-    if (line.StartsWith("--"))
-    {
-        continue;
-    }
-    if (line.Contains("({"))
-    {
+List<string> list =  luaReader.GetListOfLua(@"85E-all.lua");
+mainController.CreateListParamerts(list);
 
-        isReading = true;
-
-    }
-    if (isReading)
-        newline += line;
-
-
-    if (line.Equals("})"))
-    {
-
-        isReading = false;
-        Blocks.Add(newline);
-        newline = "";
-    }
-}
-
+/*
 foreach (string line in Blocks)
 {
 
@@ -61,11 +44,6 @@ foreach (string line in Blocks)
     
 }
 
-/*foreach (var name in BlockTexts.Where(x => x is Adapter).Select(x => x.Name))
-{
-    Console.WriteLine(name);
-}
-*/
 foreach(string line in Blocks){
     if (line.StartsWith("make_channel"))
     {
@@ -79,7 +57,8 @@ foreach(string line in Blocks){
     }
 }
 
-
+*/
+BlocksParametrs = mainController.GetListParametrs();
 Console.WriteLine($"Адаптеров: {BlocksParametrs.Where(x => x is Adapter).Count()}");
 Console.WriteLine($"Ридеров: {BlocksParametrs.Where(x => x is Reader).Count()}");
 Console.WriteLine($"Каналов: {BlocksParametrs.Where(x => x is Channel).Count()}");
@@ -90,7 +69,5 @@ foreach (Channel chan in BlocksParametrs.Where(x => x is Channel))
     Console.WriteLine(chan.Name);
     Console.WriteLine(chan.Adapter.Name);
 }
-
-Console.WriteLine("Адаптеров список:");
 
 
