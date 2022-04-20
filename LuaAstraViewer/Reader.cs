@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-    internal class Reader : Parametr
-    {
-    
-    }
+public class Reader : Parametr
+{
+
+}
 

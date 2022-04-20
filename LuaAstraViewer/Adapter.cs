@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-internal class Adapter : Parametr
+public class Adapter : Parametr
 {
     public string Type { get; set; }
     public string Tp { get; set; }

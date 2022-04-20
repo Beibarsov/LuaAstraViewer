@@ -1,7 +1,7 @@
 public class MainController
 {
 
-   public List<Parametr> ListParametrs = new List<Parametr>();
+    public List<Parametr> ListParametrs = new List<Parametr>();
 
 
     public void CreateListParamerts(List<string> Blocks)
@@ -23,6 +23,7 @@ public class MainController
                 string[] separators1 = new string[] { ",", "({", "})" };
                 string[] parametrs = line.Split(separators1, StringSplitOptions.RemoveEmptyEntries);
                 parametr.Name = parametrs[0].Replace("adapter_", "").Replace(" = dvb_tune", "").Trim();
+                parametr.Tp = parametrs[3].Replace("tp = \"", "").Trim().Replace("\"", "");
                 // newBlockText.Type = "Тест";
                 ListParametrs.Add(parametr);
             }
@@ -45,7 +46,32 @@ public class MainController
 
     }
 
-    public List<Parametr> GetListParametrs(){
+    public List<Parametr> GetListParametrs()
+    {
         return ListParametrs;
     }
+
+    public List<Channel> GetListChannels()
+    {
+        return ListParametrs.OfType<Channel>().ToList();
+
+    }   
+    
+    public List<Adapter> GetAdapterList()
+    {
+        return ListParametrs.OfType<Adapter>().ToList();
+
+    }  
+    
+    public List<Reader> GetReaderList()
+    {
+        return ListParametrs.OfType<Reader>().ToList();
+
+    }
+
+    public List<Channel> GetChannelListOfAdapter(Adapter adapter)
+    {
+        return ListParametrs.OfType<Channel>().Where(x=>x.Equals(adapter)).ToList();
+    }
+
 }
